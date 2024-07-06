@@ -15,10 +15,14 @@ Changelog:
 */
 Register::Register(volatile uint32_t *address)
     : regAddress(address),
+#ifdef USE_REGISTERS_META
+      metadata(nullptr),
+#endif
       REG0(regAddress, 0x000000FF, 0),
       REG1(regAddress, 0x0000FF00, 8),
       REG2(regAddress, 0x00FF0000, 16),
-      REG3(regAddress, 0xFF000000, 24) {}
+      REG3(regAddress, 0xFF000000, 24) {
+}
 
 inline uint32_t Register::read() const { return *regAddress; }
 

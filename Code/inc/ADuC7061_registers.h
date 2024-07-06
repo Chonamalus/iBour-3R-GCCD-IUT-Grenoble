@@ -3,7 +3,9 @@
 ADuC7061 Microprocessor Register Definitions
 ==========================================================================================
 
-TO-DO: found the UART right register addresses
+TO-DO: 
+    found the UART right register addresses
+    add GPIO, PWM, flash control interface
 
 Changelog:
 -- Version 0.1.7 Chonamalus
@@ -180,5 +182,3 @@ away the access to the register, which is important for memory-mapped I/O.
 #define GP2SET (*(volatile unsigned long *)0xFFFF0D44)
 #define GP2CLR (*(volatile unsigned long *)0xFFFF0D48)
 #define GP2PAR (*(volatile unsigned long *)0xFFFF0D4C)
-
-// TO-DO: add GPIO, PWM, flash control interface
