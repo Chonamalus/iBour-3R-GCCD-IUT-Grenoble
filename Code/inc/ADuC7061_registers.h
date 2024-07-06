@@ -1,13 +1,13 @@
 /*
-===============================================
+==========================================================================================
 ADuC7061 Microprocessor Register Definitions
-===============================================
+==========================================================================================
 
 TO-DO: found the UART right register addresses
 
 Changelog:
 -- Version 0.1.7 Chonamalus
-    -- Architecture modification on addresses
+    -- $(FUTURE VERSION NAME HERE)
 -- Version 0.1.6 Keil
     -- Initial file founded on Keil's website
 

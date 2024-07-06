@@ -1,7 +1,7 @@
 /*
-===============================================
+==========================================================================================
 iBour-3R GCCD-IUT-Grenoble - Register Interface 32bits
-===============================================
+==========================================================================================
 
 TO-DO:
     create a Builder Pattern to store the 'metadata' of each registers
@@ -9,7 +9,7 @@ TO-DO:
 
 Changelog:
 -- Version 0.0.0 Chonamalus
-    -- Register interface to simplify development
+    -- $(FUTURE VERSION NAME HERE)
 
 Description:
     The Register interface is created to manipulate either the entire 32bits register or
@@ -36,24 +36,17 @@ function inline, which eliminates the overhead of function calls.
 */
 class Register {
    public:
-    inline Register(volatile uint32_t *address)
-        : regAddress(address),
-          REG0(regAddress, 0x000000FF, 0),
-          REG1(regAddress, 0x0000FF00, 8),
-          REG2(regAddress, 0x00FF0000, 16),
-          REG3(regAddress, 0xFF000000, 24) {}
+    inline Register(
+        volatile uint32_t *address);  // Constructor w/ actual register address
 
-    // Read the whole 32 bits register
-    inline uint32_t read() const { return *regAddress; }
-
-    // Write to the whole 32 bits register
-    inline void write(uint32_t value) { *regAddress = value; }
+    inline uint32_t read() const;       // Read the whole 32 bits register
+    inline void write(uint32_t value);  // Write to the whole 32 bits register
 
    private:
     volatile uint32_t *regAddress;  // Address of the 32 bits register
 
    public:
-    // Instances of sub-registers as public to for better accessibility
+    // Instances of sub-registers as public for better accessibility
     SubRegister REG0;
     SubRegister REG1;
     SubRegister REG2;
@@ -65,19 +58,10 @@ class Register {
 */
 class SubRegister {
    public:
-    inline SubRegister(volatile uint32_t *regAddress, uint32_t mask, uint8_t shift) {
-        this->regAddress = regAddress;
-        this->mask = mask;
-        this->shift = shift;
-    }
+    inline SubRegister(volatile uint32_t *regAddress, uint32_t mask, uint8_t shift);
 
-    // Read the sub-register, byte
-    inline uint8_t read() const { return (*regAddress & mask) >> shift; }
-
-    // Write to the sub-register, byte
-    inline void write(uint8_t value) {
-        *regAddress = (*regAddress & ~mask) | ((value << shift) & mask);
-    }
+    inline uint8_t read() const;       // Read the sub-register, byte
+    inline void write(uint8_t value);  // Write to the sub-register, byte
 
    private:
     volatile uint32_t *regAddress;  // Address of the main 32-bit register
