@@ -21,14 +21,10 @@ Programming techniques and optimization:
 #include <stdint.h>
 
 #include "Register32_Meta.h"
-
-// Ensures that registers metadata is only used for debugging purpose, not for code
-// deployment in microprocessor
-#ifdef DEBUG
-#define USE_REGISTERS_META
-#endif
+#include "config.h"
 
 #ifdef USE_REGISTERS_META
+#ifdef ACCESS_TYPE
 class RegisterMetaBuilder {
    public:
     RegisterMetaBuilder& setAddress(uint32_t address) {
@@ -61,4 +57,5 @@ class RegisterMetaBuilder {
     uint32_t defaultValue;
     uint8_t size;
 };
+#endif
 #endif

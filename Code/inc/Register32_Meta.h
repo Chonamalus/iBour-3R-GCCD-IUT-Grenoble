@@ -20,14 +20,11 @@ Programming techniques and optimization:
 #pragma once
 #include <stdint.h>
 
-// Ensures that registers metadata is only used for debugging purpose, not for code
-// deployment in microprocessor
-#ifdef DEBUG
-#define USE_REGISTERS_META
-#endif
+#include "config.h"
 
 #ifdef USE_REGISTERS_META
 /* Register access types */
+#define ACCESS_TYPE
 typedef enum { READ, WRITE, READ_WRITE } AccessType;
 
 class RegisterMeta {

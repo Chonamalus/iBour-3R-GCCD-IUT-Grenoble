@@ -35,11 +35,31 @@ microprocessor
 
 #include "Register32_Meta.h"
 #include "Register32_MetaBuilder.h"
+#include "config.h"
 
-// Ensures that registers metadata is only used for debugging purpose, not for code deployment in microprocessor
-#ifdef DEBUG
-#define USE_REGISTERS_META
-#endif
+/*
+    The SubRegister class slicing the 32 bits register
+*/
+class SubRegister {
+   public:
+    inline SubRegister(volatile uint32_t *regAddress, uint32_t mask, uint8_t shift) {
+        this->regAddress = regAddress;
+        this->mask = mask;
+        this->shift = shift;
+    };
+
+    inline uint8_t read() const {  // Read the sub-register, byte
+        return (*regAddress & mask) >> shift;
+    };
+    inline void write(uint8_t value) {  // Write to the sub-register, byte
+        *regAddress = (*regAddress & ~mask) | ((value << shift) & mask);
+    };
+
+   private:
+    volatile uint32_t *regAddress;  // Address of the main 32-bit register
+    uint32_t mask;                  // Mask for the sub-register
+    uint8_t shift;                  // Bit shift for the sub-register
+};
 
 /*
     Exemple use:
@@ -49,11 +69,22 @@ microprocessor
 */
 class Register {
    public:
-    inline Register(
-        volatile uint32_t *address);  // Constructor w/ actual register address
+    inline Register(volatile uint32_t *address)
+        : regAddress(address),
+#ifdef USE_REGISTERS_META
+          metadata(nullptr),
+#endif
+          REG0(regAddress, 0x000000FF, 0),
+          REG1(regAddress, 0x0000FF00, 8),
+          REG2(regAddress, 0x00FF0000, 16),
+          REG3(regAddress, 0xFF000000, 24){};  // Constructor w/ actual register address
 
-    inline uint32_t read() const;       // Read the whole 32 bits register
-    inline void write(uint32_t value);  // Write to the whole 32 bits register
+    inline uint32_t read() const {  // Read the whole 32 bits register
+        return *regAddress;
+    };
+    inline void write(uint32_t value) {  // Write to the whole 32 bits register
+        *regAddress = value;
+    };
 
 #ifdef USE_REGISTERS_META
     // Set & get RegisterMeta /!\ Must change, need test in registers
@@ -73,20 +104,4 @@ class Register {
     SubRegister REG1;
     SubRegister REG2;
     SubRegister REG3;
-};
-
-/*
-    The SubRegister class slicing the 32 bits register
-*/
-class SubRegister {
-   public:
-    inline SubRegister(volatile uint32_t *regAddress, uint32_t mask, uint8_t shift);
-
-    inline uint8_t read() const;       // Read the sub-register, byte
-    inline void write(uint8_t value);  // Write to the sub-register, byte
-
-   private:
-    volatile uint32_t *regAddress;  // Address of the main 32-bit register
-    uint32_t mask;                  // Mask for the sub-register
-    uint8_t shift;                  // Bit shift for the sub-register
 };
