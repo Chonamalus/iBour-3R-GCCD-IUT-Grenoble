@@ -1,5 +1,0 @@
-REGEDIT4
-
-[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\ActiveX Compatibility\{6262D3A0-531B-11CF-91F6-C2863C385E30}]
-"Compatibility Flags"=dword:00000000
-"AlternateCLSID"="{74DD2713-BA98-4D10-A16E-270BBEB9B555}"
