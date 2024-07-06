@@ -1,6 +1,6 @@
 /*
 ===============================================
-iBour-3R - Register Interface 32bits
+iBour-3R GCCD-IUT-Grenoble - Register Interface 32bits
 ===============================================
 
 TO-DO:
