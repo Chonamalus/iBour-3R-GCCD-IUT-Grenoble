@@ -27,6 +27,8 @@ function inline, which eliminates the overhead of function calls.
 
 #pragma once
 #include <stdint.h>
+#include "Register32_Meta.h"
+
 
 /*
     Exemple use:

@@ -11,6 +11,7 @@ Description:
     §§§§
 */
 
+#pragma once
 #include "ADuC7061_registers.h"
 #include "Register32_Interface.h"
 
