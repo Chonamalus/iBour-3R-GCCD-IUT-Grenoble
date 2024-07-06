@@ -1,0 +1,4 @@
+REGEDIT4
+
+[HKLM\SOFTWARE\Microsoft\Internet Explorer\ActiveX Compatibility\{6262D3A0-531B-11CF-91F6-C2863C385E30}]
+"Compatibility Flags"=dword:00000000
