@@ -21,6 +21,14 @@ file in the main.cpp file to compile and run the project.
 */
 #define DEBUG
 
+/*
+    Only define the set of registers that will be used in the final code.
+*/
+#define INTERRUPT_CONTROLLER
+#define REMAP_SYS_CONTROL
+
+
+
 #ifdef DEBUG
 #define USE_REGISTERS_META  // Registers Metadata only for debugging, not for deployment
 #endif

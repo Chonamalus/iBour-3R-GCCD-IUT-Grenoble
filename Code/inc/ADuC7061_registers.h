@@ -3,18 +3,17 @@
 ADuC7061 Microprocessor Register Definitions
 ==========================================================================================
 
-TO-DO: 
-    found the UART right register addresses
-    add GPIO, PWM, flash control interface
+TO-DO:
 
 Changelog:
 -- Version 0.1.7 Chonamalus
     -- $(FUTURE VERSION NAME HERE)
--- Version 0.1.6 Keil
+-- Version 0.1.6 Eckart Hartmann at. IAC Software
     -- Initial file founded on Keil's website
 
 Source:
-    https://www.keil.com/dd/docs/arm/adi/aduc7061.h
+    (ADuC7060Libs/7060Libs/ExampleRV/ADuC7060.h)
+    https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/EVAL-ADUC7061.html#eb-relatedsoftware
 
 Description:
     This header file provides definitions for the registers of the ADuC7061
@@ -22,10 +21,16 @@ microprocessor, an ARM7TDMI-based microcontroller, as described in the datasheet
 allows direct access to the microprocessor's memory-mapped registers for various
 functionalities such as interrupt control, system control, timers, PLL and oscillator
 control, ADC and DAC interface, UART, I2C bus, SPI, GPIO, Flash control, and PWM.
+    It is a modified version of the source code of Eckart Hartmann at. IAC Software. For
+more information, please see the URL source and the footnote of this file.
 
 Programming techniques and optimization:
     1. Volatile Keyword: The volatile keyword ensures that the compiler does not optimize
 away the access to the register, which is important for memory-mapped I/O.
+    2. uint32_t type: The uint32_t type guaranties the 32 bits addressing for the
+registers, instead of using unsigned long.
+    3. Preprocessor directive: The pre-defined variables in config.h ensures that we are
+loading only the necessary registers into memory.
 */
 
 #pragma once
@@ -42,6 +47,7 @@ away the access to the register, which is important for memory-mapped I/O.
 #define IRQP0 (*(volatile uint32_t *)0xFFFF0020)
 #define IRQP1 (*(volatile uint32_t *)0xFFFF0024)
 #define IRQP2 (*(volatile uint32_t *)0xFFFF0028)
+#define IRQP3 (*(volatile uint32_t *)0xFFFF002C)
 #define IRQCONN (*(volatile uint32_t *)0xFFFF0030)
 #define IRQCONE (*(volatile uint32_t *)0xFFFF0034)
 #define IRQCLRE (*(volatile uint32_t *)0xFFFF0038)
@@ -52,6 +58,15 @@ away the access to the register, which is important for memory-mapped I/O.
 #define FIQCLR (*(volatile uint32_t *)0xFFFF010C)
 #define FIQVEC (*(volatile uint32_t *)0xFFFF011C)
 #define FIQSTAN (*(volatile uint32_t *)0xFFFF013C)
+
+/*	 Function Pointers for Interrupts */
+typedef void (*tyVctHndlr)(void);
+extern tyVctHndlr IRQ;
+extern tyVctHndlr SWI;
+extern tyVctHndlr FIQ;
+extern tyVctHndlr UNDEF;
+extern tyVctHndlr PABORT;
+extern tyVctHndlr DABORT;
 
 // REMAP AND SYSTEM CONTROL
 #define REMAP (*(volatile uint32_t *)0xFFFF0220)
@@ -76,6 +91,7 @@ away the access to the register, which is important for memory-mapped I/O.
 #define T2VAL (*(volatile uint32_t *)0xFFFF0364)
 #define T2CON (*(volatile uint32_t *)0xFFFF0368)
 #define T2CLRI (*(volatile uint32_t *)0xFFFF036C)
+#define T2RCFG (*(volatile uint32_t *)0xFFFF0370)
 
 // TIMER 3
 #define T3LD (*(volatile uint32_t *)0xFFFF0380)
@@ -85,6 +101,7 @@ away the access to the register, which is important for memory-mapped I/O.
 #define T3CAP (*(volatile uint32_t *)0xFFFF0390)
 
 // PLL AND OSCILLATOR CONTROL
+#define PLLSTA (*(volatile uint32_t *)0xFFFF0400)
 #define POWKEY1 (*(volatile uint32_t *)0xFFFF0404)
 #define POWCON0 (*(volatile uint32_t *)0xFFFF0408)
 #define POWKEY2 (*(volatile uint32_t *)0xFFFF040C)
@@ -125,17 +142,18 @@ away the access to the register, which is important for memory-mapped I/O.
 #define DACCON (*(volatile uint32_t *)0xFFFF0600)
 #define DACDAT (*(volatile uint32_t *)0xFFFF0604)
 
-// UART
+// 450 COMPATIABLE UART CORE REGISTERS
 #define COMTX (*(volatile uint32_t *)0xFFFF0700)
-#define COMRX (*(volatile uint32_t *)0xFFFF0700)    // 0xFFFF0701
-#define COMDIV0 (*(volatile uint32_t *)0xFFFF0700)  // 0xFFFF0702-3
+#define COMRX (*(volatile uint32_t *)0xFFFF0700)
+#define COMDIV0 (*(volatile uint32_t *)0xFFFF0700)
 #define COMIEN0 (*(volatile uint32_t *)0xFFFF0704)
-#define COMDIV1 (*(volatile uint32_t *)0xFFFF0704)  // 0xFFFF0706
+#define COMDIV1 (*(volatile uint32_t *)0xFFFF0704)
 #define COMIID0 (*(volatile uint32_t *)0xFFFF0708)
 #define COMCON0 (*(volatile uint32_t *)0xFFFF070C)
 #define COMCON1 (*(volatile uint32_t *)0xFFFF0710)
 #define COMSTA0 (*(volatile uint32_t *)0xFFFF0714)
 #define COMSTA1 (*(volatile uint32_t *)0xFFFF0718)
+#define COMSCR (*(volatile uint32_t *)0xFFFF071C)
 #define COMDIV2 (*(volatile uint32_t *)0xFFFF072C)
 
 // I2C BUS PERIPHERAL DEVICE
@@ -147,6 +165,7 @@ away the access to the register, which is important for memory-mapped I/O.
 #define I2CMCNT1 (*(volatile uint32_t *)0xFFFF0914)
 #define I2CADR0 (*(volatile uint32_t *)0xFFFF0918)
 #define I2CADR1 (*(volatile uint32_t *)0xFFFF091C)
+#define I2CREP (*(volatile uint32_t *)0xFFFF0920)
 #define I2CDIV (*(volatile uint32_t *)0xFFFF0924)
 #define I2CSCON (*(volatile uint32_t *)0xFFFF0928)
 #define I2CSSTA (*(volatile uint32_t *)0xFFFF092C)
@@ -158,6 +177,7 @@ away the access to the register, which is important for memory-mapped I/O.
 #define I2CID2 (*(volatile uint32_t *)0xFFFF0944)
 #define I2CID3 (*(volatile uint32_t *)0xFFFF0948)
 #define I2CFSTA (*(volatile uint32_t *)0xFFFF094C)
+#define I2CRCON (*(volatile uint32_t *)0xFFFF0950)
 
 // SERIAL PORT INTERFACE PERIPHERAL
 #define SPISTA (*(volatile uint32_t *)0xFFFF0A00)
@@ -167,18 +187,63 @@ away the access to the register, which is important for memory-mapped I/O.
 #define SPICON (*(volatile uint32_t *)0xFFFF0A10)
 
 // GPIO AND SERIAL PORT MUX
-#define GP0CON0 (*(volatile unsigned long *)0xFFFF0D00)
-#define GP1CON (*(volatile unsigned long *)0xFFFF0D04)
-#define GP2CON (*(volatile unsigned long *)0xFFFF0D08)
-#define GP0DAT (*(volatile unsigned long *)0xFFFF0D20)
-#define GP0SET (*(volatile unsigned long *)0xFFFF0D24)
-#define GP0CLR (*(volatile unsigned long *)0xFFFF0D28)
-#define GP0PAR (*(volatile unsigned long *)0xFFFF0D2C)
-#define GP1DAT (*(volatile unsigned long *)0xFFFF0D30)
-#define GP1SET (*(volatile unsigned long *)0xFFFF0D34)
-#define GP1CLR (*(volatile unsigned long *)0xFFFF0D38)
-#define GP1PAR (*(volatile unsigned long *)0xFFFF0D3C)
-#define GP2DAT (*(volatile unsigned long *)0xFFFF0D40)
-#define GP2SET (*(volatile unsigned long *)0xFFFF0D44)
-#define GP2CLR (*(volatile unsigned long *)0xFFFF0D48)
-#define GP2PAR (*(volatile unsigned long *)0xFFFF0D4C)
+#define GP0CON0 (*(volatile uint32_t *)0xFFFF0D00)
+#define GP1CON (*(volatile uint32_t *)0xFFFF0D04)
+#define GP2CON (*(volatile uint32_t *)0xFFFF0D08)
+#define GP0DAT (*(volatile uint32_t *)0xFFFF0D20)
+#define GP0SET (*(volatile uint32_t *)0xFFFF0D24)
+#define GP0CLR (*(volatile uint32_t *)0xFFFF0D28)
+#define GP0PAR (*(volatile uint32_t *)0xFFFF0D2C)
+#define GP1DAT (*(volatile uint32_t *)0xFFFF0D30)
+#define GP1SET (*(volatile uint32_t *)0xFFFF0D34)
+#define GP1CLR (*(volatile uint32_t *)0xFFFF0D38)
+#define GP1PAR (*(volatile uint32_t *)0xFFFF0D3C)
+#define GP2DAT (*(volatile uint32_t *)0xFFFF0D40)
+#define GP2SET (*(volatile uint32_t *)0xFFFF0D44)
+#define GP2CLR (*(volatile uint32_t *)0xFFFF0D48)
+#define GP2PAR (*(volatile uint32_t *)0xFFFF0D4C)
+
+// FLASH CONTROL INTERFACE
+#define FEESTA (*(volatile uint32_t *)0xFFFF0E00)
+#define FEEMOD (*(volatile uint32_t *)0xFFFF0E04)
+#define FEECON (*(volatile uint32_t *)0xFFFF0E08)
+#define FEEDAT (*(volatile uint32_t *)0xFFFF0E0C)
+#define FEEADR (*(volatile uint32_t *)0xFFFF0E10)
+#define FEESIGN (*(volatile uint32_t *)0xFFFF0E18)
+#define FEEPRO (*(volatile uint32_t *)0xFFFF0E1C)
+#define FEEHIDE (*(volatile uint32_t *)0xFFFF0E20)
+
+// PWM
+#define PWMCON (*(volatile uint32_t *)0xFFFF0F80)
+#define PWM0COM0 (*(volatile uint32_t *)0xFFFF0F84)
+#define PWM0COM1 (*(volatile uint32_t *)0xFFFF0F88)
+#define PWM0COM2 (*(volatile uint32_t *)0xFFFF0F8C)
+#define PWM0LEN (*(volatile uint32_t *)0xFFFF0F90)
+#define PWM1COM0 (*(volatile uint32_t *)0xFFFF0F94)
+#define PWM1COM1 (*(volatile uint32_t *)0xFFFF0F98)
+#define PWM1COM2 (*(volatile uint32_t *)0xFFFF0F9C)
+#define PWM1LEN (*(volatile uint32_t *)0xFFFF0FA0)
+#define PWM2COM0 (*(volatile uint32_t *)0xFFFF0FA4)
+#define PWM2COM1 (*(volatile uint32_t *)0xFFFF0FA8)
+#define PWM2COM2 (*(volatile uint32_t *)0xFFFF0FAC)
+#define PWM2LEN (*(volatile uint32_t *)0xFFFF0FB0)
+#define PWMCLRI (*(volatile uint32_t *)0xFFFF0FB8)
+
+/* Footnote
+
+    All ADuC706x library code provided by ADI, including this file, is provided as is
+without warranty of any kind, either expressed or implied. You assume any and all risk
+from the use of this code.  It is the responsibility of the person integrating this code
+into an application to ensure that the resulting application performs as required and is
+safe.
+
+Status:			Alpha tested.
+Tools:			Developed using Keil uV3 version 3.53.
+Hardware:		ADuC7060.
+Description:	Header file for ADuC7060 MMR definitions.
+Responsibility:
+        Group:		IAC Software.
+        Person:		Eckart Hartmann.
+Modifications:
+        2008/02/18	Design Start.
+*/
