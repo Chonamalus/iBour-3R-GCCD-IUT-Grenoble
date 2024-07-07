@@ -62,46 +62,50 @@ class SubRegister {
 };
 
 /*
-    Exemple use:
+    Example use:
     Register regDACCON(DACCON);
     regDACCON.write(0x12345678);
     regDACCON.REG2.write(0x43);
 */
+
 class Register {
    public:
-    inline Register(volatile uint32_t *address)
+    // Constructor with actual register address
+    Register(volatile uint32_t *address)
         : regAddress(address),
-#ifdef USE_REGISTERS_META
-          metadata(nullptr),
-#endif
           REG0(regAddress, 0x000000FF, 0),
           REG1(regAddress, 0x0000FF00, 8),
           REG2(regAddress, 0x00FF0000, 16),
-          REG3(regAddress, 0xFF000000, 24){};  // Constructor w/ actual register address
-
-    inline uint32_t read() const {  // Read the whole 32 bits register
-        return *regAddress;
-    };
-    inline void write(uint32_t value) {  // Write to the whole 32 bits register
-        *regAddress = value;
-    };
-
+          REG3(regAddress, 0xFF000000, 24) {
 #ifdef USE_REGISTERS_META
-    // Set & get RegisterMeta /!\ Must change, need test in registers
-    void setMetadata(RegisterMeta *meta) { metadata = meta; }
-    const RegisterMeta *getMetadata() const { return metadata; }
+        metadata = nullptr;
 #endif
+    }
+
+    // Read the whole 32 bits register
+    uint32_t read() const {
+        return *regAddress;
+    }
+
+    // Write to the whole 32 bits register
+    void write(uint32_t value) {
+        *regAddress = value;
+    }
 
    private:
-    volatile uint32_t *regAddress;  // Address of the 32 bits register
-#ifdef USE_REGISTERS_META
-    RegisterMeta *metadata;  // RegisterMeta for debugging purpose
-#endif
+    volatile uint32_t *regAddress;  // Actual address of the 32 bits register
 
    public:
-    // Instances of sub-registers as public for better accessibility
+    // Instances of sub-registers for individual byte access
     SubRegister REG0;
     SubRegister REG1;
     SubRegister REG2;
     SubRegister REG3;
+
+#ifdef USE_REGISTERS_META
+   public:
+    // RegisterMeta for debugging purpose.
+    // This is public to allow for easier manipulation of the metadata for testing purposes
+    RegisterMeta *metadata;
+#endif
 };

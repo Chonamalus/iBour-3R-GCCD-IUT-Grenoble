@@ -19,7 +19,7 @@ file in the main.cpp file to compile and run the project.
    microprocessor, please ensure that DEBUG is not defined, to exclude the metadata and
    other debug-related code.
 */
-// #define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #define USE_REGISTERS_META  // Registers Metadata only for debugging, not for deployment

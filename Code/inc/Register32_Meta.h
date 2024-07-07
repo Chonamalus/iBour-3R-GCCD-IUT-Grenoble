@@ -24,19 +24,18 @@ Programming techniques and optimization:
 
 #ifdef USE_REGISTERS_META
 /* Register access types */
-#define ACCESS_TYPE
+// #define ACCESS_TYPE
 typedef enum { READ, WRITE, READ_WRITE } AccessType;
 
 class RegisterMeta {
    public:
-    RegisterMeta(uint32_t address, AccessType accessType, uint32_t defaultValue,
-                 uint8_t size)
-        : address(address),
-          accessType(accessType),
-          defaultValue(defaultValue),
-          size(size) {}
+    RegisterMeta(AccessType accessType, uint32_t defaultValue,
+                 uint8_t size) {
+        this->accessType = accessType;
+        this->defaultValue = defaultValue;
+        this->size = size;
+    }
 
-    uint32_t address;
     AccessType accessType;
     uint32_t defaultValue;
     uint8_t size;

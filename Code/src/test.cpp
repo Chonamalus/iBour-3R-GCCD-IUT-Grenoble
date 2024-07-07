@@ -66,21 +66,25 @@ void testMetadataHandling() {
 
     // Write to the whole 32 bits register
     RegisterMeta meta = RegisterMetaBuilder()
-                            .setAddress(0x40000000)
                             .setAccessType(READ_WRITE)
                             .setDefaultValue(0xFFFFFFFF)
                             .setSize(32)
                             .build();
 
-    reg.setMetadata(&meta);
-    const RegisterMeta* retrievedMeta = reg.getMetadata();
+    // Set the metadata of reg
+    reg.metadata = &meta;
 
-    if (retrievedMeta != nullptr && retrievedMeta->address == 0x40000000 &&
-        retrievedMeta->accessType == READ_WRITE &&
-        retrievedMeta->defaultValue == 0xFFFFFFFF && retrievedMeta->size == 32) {
-        std::cout << "Metadata Handling Test Passed!" << std::endl;
+    // Get the values back, useless here, I will test later with the methods defined in
+    // RegisterMeta
+    AccessType retrievedAccessType = reg.metadata->accessType;
+    uint32_t retrievedDefaultValue = reg.metadata->defaultValue;
+    uint8_t retrievedSize = reg.metadata->size;
+
+    if (retrievedAccessType == READ_WRITE && retrievedDefaultValue == 0xFFFFFFFF &&
+        retrievedSize == 32) {
+        std::cout << "Register Metadata Builder Test Passed!" << std::endl;
     } else {
-        std::cout << "Metadata Handling Test Failed!" << std::endl;
+        std::cout << "Register Metadata Builder Test Failed!" << std::endl;
     }
 }
 #endif
