@@ -24,7 +24,6 @@ Programming techniques and optimization:
 #include "config.h"
 
 #ifdef USE_REGISTERS_META
-// #ifdef ACCESS_TYPE
 class RegisterMetaBuilder {
    public:
     RegisterMetaBuilder& setAccessType(AccessType accessType) {
@@ -51,5 +50,4 @@ class RegisterMetaBuilder {
     uint32_t defaultValue;
     uint8_t size;
 };
-// #endif
 #endif

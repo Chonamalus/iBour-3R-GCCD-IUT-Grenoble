@@ -24,20 +24,24 @@ Programming techniques and optimization:
 
 #ifdef USE_REGISTERS_META
 /* Register access types */
-// #define ACCESS_TYPE
 typedef enum { READ, WRITE, READ_WRITE } AccessType;
 
 class RegisterMeta {
    public:
-    RegisterMeta(AccessType accessType, uint32_t defaultValue,
-                 uint8_t size) {
-        this->accessType = accessType;
-        this->defaultValue = defaultValue;
-        this->size = size;
-    }
+    RegisterMeta(AccessType accessType, uint32_t defaultValue, uint8_t size)
+        : accessType(accessType), defaultValue(defaultValue), size(size) {}
 
-    AccessType accessType;
-    uint32_t defaultValue;
-    uint8_t size;
+    const AccessType accessType;
+    const uint32_t defaultValue;
+    const uint8_t size;
+
+    // Methods to check register state
+    uint32_t getDefaultValue() const { return this->defaultValue; }
+    bool isReadable() const { return this->accessType == READ; }
+    bool isWritable() const { return this->accessType == WRITE; }
+    bool isReadWrite() const { return this->accessType == READ_WRITE; }
+    bool isSize32() const { return this->size == 32; }
+    bool isSize16() const { return this->size == 16; }
+    bool isSize8() const { return this->size == 8; }
 };
 #endif
