@@ -4,17 +4,23 @@ iBour-3R GCCD-IUT-Grenoble - Register 32 bits Metadata, only for debugging purpo
 ==========================================================================================
 
 TO-DO:
-    §§§§
 
 Changelog:
 -- Version 0.0.0 Chonamalus
     -- $(FUTURE VERSION NAME HERE)
 
 Description:
-    §§§§
+    The RegisterMeta class contains what I call the metadata of the registers. Those data
+are not needed for the deployed code in microprocessor. But, they are very useful for
+development, if I need to check whether I can read, write to a register, or to check the
+size of it, or to get the default value of the register.
 
 Programming techniques and optimization:
-    §§§§
+    1. Preprocessor directive: The USE_REGISTERS_META defined variable ensures that the
+code uses metadata of registers only for debugging, not for deployment in the
+microprocessor.
+    2. Const Keyword: The const keyword indicate to the compiler that the metadata
+attributes of a register are not variables, they are data.
 */
 
 #pragma once

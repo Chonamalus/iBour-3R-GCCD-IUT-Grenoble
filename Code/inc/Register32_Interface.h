@@ -4,8 +4,6 @@ iBour-3R GCCD-IUT-Grenoble - Register Interface 32bits
 ==========================================================================================
 
 TO-DO:
-    create a Builder Pattern to store the 'metadata' of each registers
-    'metadata' : address, access type (READ WRITE), default value, size
 
 Changelog:
 -- Version 0.0.0 Chonamalus
@@ -17,17 +15,17 @@ to manipulate each bytes of it, represented by the SubRegisters. It is usefull b
 sometimes, the entire 32 bits of data in one address isn't used, but just some part of it.
 Slicing the memory, makes it simpler to manipulate. It is possible to read and write to
 the entire register, or just to its subregisters.
-    Contains metadata attributes and members, for debugging purpose, so that I can be sure
-in my code that I'm running a clean code
+    Contains metadata attributes and members, for debugging purpose, so that I can be
+sure, in my code, that I'm running a clean code.
 
 Programming techniques and optimization:
     1. Volatile Keyword: The volatile keyword ensures that the compiler does not optimize
 away the access to the register, which is important for memory-mapped I/O.
     2. Inline Functions: The inline keyword suggests to the compiler to expand the
 function inline, which eliminates the overhead of function calls.
-    3. Preprocessor directive : The USE_REGISTERS_META defined variable ensures that the
+    3. Preprocessor directive: The USE_REGISTERS_META defined variable ensures that the
 code uses metadata of registers only for debugging, not for deployment in the
-microprocessor
+microprocessor.
 */
 
 #pragma once
@@ -102,6 +100,6 @@ class Register {
     // RegisterMeta for debugging purpose.
     // This is public to allow for easier manipulation of the metadata for testing
     // purposes
-    RegisterMeta *meta;
+    const RegisterMeta *meta;
 #endif
 };
