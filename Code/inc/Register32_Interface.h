@@ -67,7 +67,6 @@ class SubRegister {
     regDACCON.write(0x12345678);
     regDACCON.REG2.write(0x43);
 */
-
 class Register {
    public:
     // Constructor with actual register address
@@ -78,19 +77,15 @@ class Register {
           REG2(regAddress, 0x00FF0000, 16),
           REG3(regAddress, 0xFF000000, 24) {
 #ifdef USE_REGISTERS_META
-        metadata = nullptr;
+        meta = nullptr;
 #endif
     }
 
     // Read the whole 32 bits register
-    uint32_t read() const {
-        return *regAddress;
-    }
+    uint32_t read() const { return *regAddress; }
 
     // Write to the whole 32 bits register
-    void write(uint32_t value) {
-        *regAddress = value;
-    }
+    void write(uint32_t value) { *regAddress = value; }
 
    private:
     volatile uint32_t *regAddress;  // Actual address of the 32 bits register
@@ -105,7 +100,8 @@ class Register {
 #ifdef USE_REGISTERS_META
    public:
     // RegisterMeta for debugging purpose.
-    // This is public to allow for easier manipulation of the metadata for testing purposes
-    RegisterMeta *metadata;
+    // This is public to allow for easier manipulation of the metadata for testing
+    // purposes
+    RegisterMeta *meta;
 #endif
 };

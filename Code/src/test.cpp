@@ -62,26 +62,35 @@ void testSubRegisterReadWrite() {
 
 #ifdef USE_REGISTERS_META
 void testMetadataHandling() {
-    Register reg(&mockMemory[2]);
+    Register reg1(&mockMemory[2]);
+    Register reg2(&mockMemory[3]);
 
     // Write to the whole 32 bits register
-    RegisterMeta meta = RegisterMetaBuilder()
-                            .setAccessType(READ_WRITE)
-                            .setDefaultValue(0xFFFFFFFF)
-                            .setSize(32)
-                            .build();
+    RegisterMeta meta1 = RegisterMetaBuilder()
+                             .setAccessType(READ_WRITE)
+                             .setDefaultValue(0xFFFFFFFF)
+                             .setSize(32)
+                             .build();
 
-    // Set the metadata of reg
-    reg.metadata = &meta;
+    RegisterMeta meta2 = RegisterMetaBuilder()
+                             .setAccessType(READ)
+                             .setDefaultValue(0x00000010)
+                             .setSize(16)
+                             .build();
 
-    // Get the values back, useless here, I will test later with the methods defined in
-    // RegisterMeta
-    AccessType retrievedAccessType = reg.metadata->accessType;
-    uint32_t retrievedDefaultValue = reg.metadata->defaultValue;
-    uint8_t retrievedSize = reg.metadata->size;
+    // Set the metadata of registers
+    reg1.meta = &meta1;
+    reg2.meta = &meta2;
 
-    if (retrievedAccessType == READ_WRITE && retrievedDefaultValue == 0xFFFFFFFF &&
-        retrievedSize == 32) {
+    // RegisterMeta Member's tester
+    bool isReg1Good = reg1.meta->isReadWrite() &&
+                      (reg1.meta->getDefaultValue() == 0xFFFFFFFF) &&
+                      reg1.meta->isSize32();
+    bool isReg2Good = reg2.meta->isReadable() &&
+                      (reg2.meta->getDefaultValue() == 0x00000010) &&
+                      reg2.meta->isSize16();
+
+    if (isReg1Good && isReg2Good) {
         std::cout << "Register Metadata Builder Test Passed!" << std::endl;
     } else {
         std::cout << "Register Metadata Builder Test Failed!" << std::endl;
