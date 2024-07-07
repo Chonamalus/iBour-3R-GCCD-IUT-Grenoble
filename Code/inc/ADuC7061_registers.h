@@ -9,7 +9,7 @@ Changelog:
 -- Version 0.1.7 Chonamalus
     -- $(FUTURE VERSION NAME HERE)
 -- Version 0.1.6 Eckart Hartmann at. IAC Software
-    -- Initial file founded on Keil's website
+    -- Design Start
 
 Source:
     (ADuC7060Libs/7060Libs/ExampleRV/ADuC7060.h)
@@ -21,8 +21,10 @@ microprocessor, an ARM7TDMI-based microcontroller, as described in the datasheet
 allows direct access to the microprocessor's memory-mapped registers for various
 functionalities such as interrupt control, system control, timers, PLL and oscillator
 control, ADC and DAC interface, UART, I2C bus, SPI, GPIO, Flash control, and PWM.
+    It is possible to only define some parts, if others are not used.
     It is a modified version of the source code of Eckart Hartmann at. IAC Software. For
-more information, please see the URL source and the footnote of this file.
+more information about the source, please see the URL source and the footnote of this
+file.
 
 Programming techniques and optimization:
     1. Volatile Keyword: The volatile keyword ensures that the compiler does not optimize
@@ -36,6 +38,10 @@ loading only the necessary registers into memory.
 #pragma once
 #include <stdint.h>
 
+// To only define the necessary registers
+#include "config.h"
+
+#ifdef INTERRUPT_CTRL
 // INTERRUPT CONTROLLER
 #define IRQSTA (*(volatile uint32_t *)0xFFFF0000)
 #define IRQSIG (*(volatile uint32_t *)0xFFFF0004)
@@ -67,39 +73,51 @@ extern tyVctHndlr FIQ;
 extern tyVctHndlr UNDEF;
 extern tyVctHndlr PABORT;
 extern tyVctHndlr DABORT;
+#endif
 
+#ifdef REMAP_CTRL
 // REMAP AND SYSTEM CONTROL
 #define REMAP (*(volatile uint32_t *)0xFFFF0220)
 #define RSTSTA (*(volatile uint32_t *)0xFFFF0230)
 #define RSTCLR (*(volatile uint32_t *)0xFFFF0234)
+#endif
 
+#ifdef TIMER_0_CTRL
 // TIMER 0
 #define T0LD (*(volatile uint32_t *)0xFFFF0320)
 #define T0VAL (*(volatile uint32_t *)0xFFFF0324)
 #define T0CON (*(volatile uint32_t *)0xFFFF0328)
 #define T0CLRI (*(volatile uint32_t *)0xFFFF032C)
 #define T0CAP (*(volatile uint32_t *)0xFFFF0330)
+#endif
 
+#ifdef TIMER_1_CTRL
 // WAKE UP TIMER
 #define T1LD (*(volatile uint32_t *)0xFFFF0340)
 #define T1VAL (*(volatile uint32_t *)0xFFFF0344)
 #define T1CON (*(volatile uint32_t *)0xFFFF0348)
 #define T1CLRI (*(volatile uint32_t *)0xFFFF034C)
+#endif
 
+#ifdef TIMER_2_CTRL
 // WATCHDOG TIMER
 #define T2LD (*(volatile uint32_t *)0xFFFF0360)
 #define T2VAL (*(volatile uint32_t *)0xFFFF0364)
 #define T2CON (*(volatile uint32_t *)0xFFFF0368)
 #define T2CLRI (*(volatile uint32_t *)0xFFFF036C)
 #define T2RCFG (*(volatile uint32_t *)0xFFFF0370)
+#endif
 
+#ifdef TIMER_3_CTRL
 // TIMER 3
 #define T3LD (*(volatile uint32_t *)0xFFFF0380)
 #define T3VAL (*(volatile uint32_t *)0xFFFF0384)
 #define T3CON (*(volatile uint32_t *)0xFFFF0388)
 #define T3CLRI (*(volatile uint32_t *)0xFFFF038C)
 #define T3CAP (*(volatile uint32_t *)0xFFFF0390)
+#endif
 
+#ifdef PLL_AND_CLOCK_CTRL
 // PLL AND OSCILLATOR CONTROL
 #define PLLSTA (*(volatile uint32_t *)0xFFFF0400)
 #define POWKEY1 (*(volatile uint32_t *)0xFFFF0404)
@@ -114,7 +132,9 @@ extern tyVctHndlr DABORT;
 #define GP0KEY1 (*(volatile uint32_t *)0xFFFF0464)
 #define GP0CON1 (*(volatile uint32_t *)0xFFFF0468)
 #define GP0KEY2 (*(volatile uint32_t *)0xFFFF046C)
+#endif
 
+#ifdef ADC_CTRL
 // ADC INTERFACE REGISTERS
 #define ADCSTA (*(volatile uint32_t *)0xFFFF0500)
 #define ADCMSKI (*(volatile uint32_t *)0xFFFF0504)
@@ -137,11 +157,15 @@ extern tyVctHndlr DABORT;
 #define ADCOACC (*(volatile uint32_t *)0xFFFF0548)
 #define ADCOATH (*(volatile uint32_t *)0xFFFF054C)
 #define IEXCON (*(volatile uint32_t *)0xFFFF0570)
+#endif
 
+#ifdef DAC_CTRL
 // DAC INTERFACE REGISTERS
 #define DACCON (*(volatile uint32_t *)0xFFFF0600)
 #define DACDAT (*(volatile uint32_t *)0xFFFF0604)
+#endif
 
+#ifdef UART_CTRL
 // 450 COMPATIABLE UART CORE REGISTERS
 #define COMTX (*(volatile uint32_t *)0xFFFF0700)
 #define COMRX (*(volatile uint32_t *)0xFFFF0700)
@@ -155,7 +179,9 @@ extern tyVctHndlr DABORT;
 #define COMSTA1 (*(volatile uint32_t *)0xFFFF0718)
 #define COMSCR (*(volatile uint32_t *)0xFFFF071C)
 #define COMDIV2 (*(volatile uint32_t *)0xFFFF072C)
+#endif
 
+#ifdef I2C_CTRL
 // I2C BUS PERIPHERAL DEVICE
 #define I2CMCON (*(volatile uint32_t *)0xFFFF0900)
 #define I2CMSTA (*(volatile uint32_t *)0xFFFF0904)
@@ -178,14 +204,18 @@ extern tyVctHndlr DABORT;
 #define I2CID3 (*(volatile uint32_t *)0xFFFF0948)
 #define I2CFSTA (*(volatile uint32_t *)0xFFFF094C)
 #define I2CRCON (*(volatile uint32_t *)0xFFFF0950)
+#endif
 
+#ifdef SPI_CTRL
 // SERIAL PORT INTERFACE PERIPHERAL
 #define SPISTA (*(volatile uint32_t *)0xFFFF0A00)
 #define SPIRX (*(volatile uint32_t *)0xFFFF0A04)
 #define SPITX (*(volatile uint32_t *)0xFFFF0A08)
 #define SPIDIV (*(volatile uint32_t *)0xFFFF0A0C)
 #define SPICON (*(volatile uint32_t *)0xFFFF0A10)
+#endif
 
+#ifdef GPIO_CTRL
 // GPIO AND SERIAL PORT MUX
 #define GP0CON0 (*(volatile uint32_t *)0xFFFF0D00)
 #define GP1CON (*(volatile uint32_t *)0xFFFF0D04)
@@ -202,7 +232,9 @@ extern tyVctHndlr DABORT;
 #define GP2SET (*(volatile uint32_t *)0xFFFF0D44)
 #define GP2CLR (*(volatile uint32_t *)0xFFFF0D48)
 #define GP2PAR (*(volatile uint32_t *)0xFFFF0D4C)
+#endif
 
+#ifdef FLASH_CTRL
 // FLASH CONTROL INTERFACE
 #define FEESTA (*(volatile uint32_t *)0xFFFF0E00)
 #define FEEMOD (*(volatile uint32_t *)0xFFFF0E04)
@@ -212,7 +244,9 @@ extern tyVctHndlr DABORT;
 #define FEESIGN (*(volatile uint32_t *)0xFFFF0E18)
 #define FEEPRO (*(volatile uint32_t *)0xFFFF0E1C)
 #define FEEHIDE (*(volatile uint32_t *)0xFFFF0E20)
+#endif
 
+#ifdef PWM_CTRL
 // PWM
 #define PWMCON (*(volatile uint32_t *)0xFFFF0F80)
 #define PWM0COM0 (*(volatile uint32_t *)0xFFFF0F84)
@@ -228,6 +262,7 @@ extern tyVctHndlr DABORT;
 #define PWM2COM2 (*(volatile uint32_t *)0xFFFF0FAC)
 #define PWM2LEN (*(volatile uint32_t *)0xFFFF0FB0)
 #define PWMCLRI (*(volatile uint32_t *)0xFFFF0FB8)
+#endif
 
 /* Footnote
 

@@ -24,13 +24,28 @@ file in the main.cpp file to compile and run the project.
 /*
     Only define the set of registers that will be used in the final code.
 */
-#define INTERRUPT_CONTROLLER
-#define REMAP_SYS_CONTROL
+#define INTERRUPT_CTRL
+#define REMAP_CTRL
+#define TIMER_0_CTRL
+#define TIMER_1_CTRL  // or WAKE UP TIMER
+#define TIMER_2_CTRL  // or WATCHDOG TIMER
+#define TIMER_3_CTRL
+#define PLL_AND_CLOCK_CTRL
+#define ADC_CTRL
+#define DAC_CTRL
+#define UART_CTRL
+#define I2C_CTRL
+#define SPI_CTRL
+#define GPIO_CTRL
+#define FLASH_CTRL
+#define PWM_CTRL
 
 
-
+/*
+    Preprocessor arithmetic
+*/
 #ifdef DEBUG
-#define USE_REGISTERS_META  // Registers Metadata only for debugging, not for deployment
+#define USE_REGISTERS_META
 #endif
 
 // All the project necessary included files
