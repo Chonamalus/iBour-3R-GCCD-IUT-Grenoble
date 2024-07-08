@@ -32,7 +32,6 @@ microprocessor.
 #include <stdint.h>
 
 #include "Register32_Meta.h"
-#include "Register32_MetaBuilder.h"
 #include "config.h"
 
 /*

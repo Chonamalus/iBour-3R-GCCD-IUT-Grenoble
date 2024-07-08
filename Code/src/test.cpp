@@ -15,6 +15,12 @@ Description:
 */
 
 #include "config.h"
+#ifdef TESTER
+#include <iostream>
+
+#include "Register32_Interface.h"
+#include "Register32_Meta.h"
+#include "Register32_MetaBuilder.h"
 
 // Define a mock memory space for testing
 volatile uint32_t mockMemory[10] = {0};
@@ -110,3 +116,5 @@ int main() {
 
     return 0;
 }
+
+#endif

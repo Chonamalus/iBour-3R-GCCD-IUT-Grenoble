@@ -8,9 +8,13 @@ Changelog:
     -- $(FUTURE VERSION NAME HERE)
 
 Description:
-    This file contains all the including files of the project. Also it contains
-preprocessor defined variables for debugging purpose only. One should only include this
-file in the main.cpp file to compile and run the project.
+    This file contains preprocessor defined variables:
+    - There is DEBUG mode enabled if DEBUG is defined, which means the code is made to be
+compiled by g++ on a computer.
+    - There is all the defined CTRL variables that represents each set of registers.
+Enable the ones you use, and comment out the ones you don't need for your final code.
+    - There is preprocessor arithmetic, that enables differents part of the code, if debug
+mode is enabled. So that, it is much more dynamic for development purpose.
 */
 
 /*
@@ -40,19 +44,10 @@ file in the main.cpp file to compile and run the project.
 #define FLASH_CTRL
 #define PWM_CTRL
 
-
 /*
     Preprocessor arithmetic
 */
 #ifdef DEBUG
-#define USE_REGISTERS_META
+#define TESTER              // Use the test file
+#define USE_REGISTERS_META  // Use the registers metadata
 #endif
-
-// All the project necessary included files
-#pragma once
-#include <iostream>
-
-#include "ADuC7061_registers.h"
-#include "Register32_Interface.h"
-#include "Register32_Meta.h"
-#include "Register32_MetaBuilder.h"
