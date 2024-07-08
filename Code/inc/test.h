@@ -25,6 +25,7 @@ Description:
 // Define a mock memory space for testing
 volatile uint32_t mockMemory[10] = {0};
 
+// Test Register Read Write
 void testRegisterReadWrite() {
     Register reg(&mockMemory[0]);
     reg.write(0x12345678);
@@ -37,6 +38,7 @@ void testRegisterReadWrite() {
     }
 }
 
+// Test SubRegister Read Write
 void testSubRegisterReadWrite() {
     Register reg(&mockMemory[1]);
     reg.write(0);  // Clear register
@@ -66,6 +68,7 @@ void testSubRegisterReadWrite() {
     }
 }
 
+// Test Metadata Handling
 #ifdef USE_REGISTERS_META
 void testMetadataHandling() {
     Register reg1(&mockMemory[2]);
@@ -103,18 +106,5 @@ void testMetadataHandling() {
     }
 }
 #endif
-
-int main() {
-    // This will be my main function for the moment, I don't want to create a main.cpp
-    // file yet. This one will just contain the test fonctions here
-
-    testRegisterReadWrite();
-    testSubRegisterReadWrite();
-#ifdef USE_REGISTERS_META
-    testMetadataHandling();
-#endif
-
-    return 0;
-}
 
 #endif

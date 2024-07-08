@@ -1,6 +1,6 @@
 /*
 ==========================================================================================
-iBour-3R GCCD-IUT-Grenoble - Configurator for debugging purpose, and includes
+iBour-3R GCCD-IUT-Grenoble - Configurator for debugging purpose
 ==========================================================================================
 
 Changelog:

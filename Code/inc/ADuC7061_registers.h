@@ -264,7 +264,7 @@ extern tyVctHndlr DABORT;
 #define PWMCLRI (*(volatile uint32_t *)0xFFFF0FB8)
 #endif
 
-/* Footnote
+/* Footnote: Source header
 
     All ADuC706x library code provided by ADI, including this file, is provided as is
 without warranty of any kind, either expressed or implied. You assume any and all risk
