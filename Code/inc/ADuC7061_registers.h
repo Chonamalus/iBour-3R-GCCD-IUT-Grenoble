@@ -1,6 +1,6 @@
 /*
 ==========================================================================================
-ADuC7061 Microprocessor Register Definitions
+iBour-3R GCCD-IUT-Grenoble - ADuC7061 Microprocessor Register Definitions
 ==========================================================================================
 
 TO-DO:

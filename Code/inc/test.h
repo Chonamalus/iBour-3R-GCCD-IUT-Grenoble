@@ -15,7 +15,7 @@ Description:
 */
 
 #include "config.h"
-#ifdef TESTER
+#ifdef DEBUG
 #include <iostream>
 
 #include "Register32_Interface.h"
@@ -106,5 +106,4 @@ void testMetadataHandling() {
     }
 }
 #endif
-
 #endif
