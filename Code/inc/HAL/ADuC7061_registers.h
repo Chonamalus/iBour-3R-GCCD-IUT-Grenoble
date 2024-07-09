@@ -16,15 +16,14 @@ Source:
     https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/EVAL-ADUC7061.html#eb-relatedsoftware
 
 Description:
-    This header file provides definitions for the registers of the ADuC7061
-microprocessor, an ARM7TDMI-based microcontroller, as described in the datasheet. It
-allows direct access to the microprocessor's memory-mapped registers for various
-functionalities such as interrupt control, system control, timers, PLL and oscillator
-control, ADC and DAC interface, UART, I2C bus, SPI, GPIO, Flash control, and PWM.
-    It is possible to only define some parts, if others are not used.
-    It is a modified version of the source code of Eckart Hartmann at. IAC Software. For
-more information about the source, please see the URL source and the footnote of this
-file.
+    This Hardware Abstraction Layer (HAL) file provides definitions for the registers of
+the ADuC7061 microprocessor, an ARM7TDMI-based microcontroller, as described in the
+datasheet. It allows direct access to the microprocessor's memory-mapped registers for
+various functionalities such as interrupt control, system control, timers, PLL and
+oscillator control, ADC and DAC interface, UART, I2C bus, SPI, GPIO, Flash control, and
+PWM. It is possible to only define some parts, if others are not used. It is a modified
+version of the source code of Eckart Hartmann at. IAC Software. For more information about
+the source, please see the URL source and the footnote of this file.
 
 Programming techniques and optimization:
     1. Volatile Keyword: The volatile keyword ensures that the compiler does not optimize
@@ -40,6 +39,24 @@ loading only the necessary registers into memory.
 
 // To only define the necessary registers
 #include "config.h"
+
+// Bit Definitions for easier manipulation of registers
+#define BIT0  0x01
+#define BIT1  0x02
+#define BIT2  0x04
+#define BIT3  0x08
+#define BIT4  0x10
+#define BIT5  0x20
+#define BIT6  0x40
+#define BIT7  0x80
+#define BIT8  0x100
+#define BIT9  0x200
+#define BIT10 0x400
+#define BIT11 0x800
+#define BIT12 0x1000
+#define BIT13 0x2000
+#define BIT14 0x4000
+#define BIT15 0x8000
 
 #ifdef INTERRUPT_CTRL
 // INTERRUPT CONTROLLER
