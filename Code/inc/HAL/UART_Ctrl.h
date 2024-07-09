@@ -29,7 +29,7 @@ thinking of what registers to use.
 #pragma once
 #include <stdint.h>
 
-#include "ADuC7061_registers.h"
+#include "ADuC7061_MMR.h"
 #include "config.h"
 
 #ifdef UART_CTRL
